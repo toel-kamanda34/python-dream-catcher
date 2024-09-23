@@ -49,14 +49,14 @@ def seed_item_categories():
                 quest.categories.append(category)
                 session.commit()
             except IntegrityError:
-                session.rollback()  # If the relationship already exists, just roll back and continue
+                session.rollback()  #  just roll back and continue if r/ship exists
     
     session.commit()
 
 def clear_database():
     session = SessionLocal()
     
-    # Delete all relationships from the association table first if you have foreign key constraints
+    # Delete all relationships from the association table 
     session.execute(item_category.delete())
     
     # Then, delete from all other tables

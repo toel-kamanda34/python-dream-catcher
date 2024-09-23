@@ -8,22 +8,42 @@ from helpers import (
     search_quests,
     manage_categories,
 )
+import os
+from colorama import init, Fore, Style
+
+init()
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def print_header():
+    print(Fore.CYAN + Style.BRIGHT + """
+╔══════════════════════════════════════╗
+║     🌟 My Bucket List CLI 🌟         ║
+╚══════════════════════════════════════╝
+""" + Style.RESET_ALL)
+
+def print_menu():
+    print(Fore.YELLOW + """
+1. 📝 Add Quest
+2. ✏️  Edit Quest
+3. ✅ Complete Quest
+4. 🗑️  Delete Quest
+5. 📋 View All Quests
+6. 🔍 Search Quests
+7. 🏷️  Manage Categories
+8. 👋 Exit
+""" + Style.RESET_ALL)
 
 def main():
     check_deadlines()
     while True:
-        print("\nWelcome to the My Bucket List CLI!")
-        print("1. Add Quest")
-        print("2. Edit Quest")
-        print("3. Complete Quest")
-        print("4. Delete Quest")
-        print("5. View All Quests")
-        print("6. Search Quests")
-        print("7. Manage Categories")
-        print("8. Exit")
-
-        choice = input("Choose an option: ")
-
+        clear_screen()
+        print_header()
+        print_menu()
+        
+        choice = input(Fore.GREEN + "Choose an option: " + Style.RESET_ALL)
+        
         if choice == '1':
             add_quest()
         elif choice == '2':
@@ -39,12 +59,12 @@ def main():
         elif choice == '7':
             manage_categories()
         elif choice == '8':
-            print("Goodbye!")
+            print(Fore.MAGENTA + "\nThank you for using My Bucket List CLI! Goodbye! 👋" + Style.RESET_ALL)
             break
         else:
-            print("Invalid choice. Please try again.")
-            
-
+            print(Fore.RED + "\nInvalid choice. Please try again." + Style.RESET_ALL)
+        
+        input("\nPress Enter to continue...")
 
 if __name__ == '__main__':
     main()
