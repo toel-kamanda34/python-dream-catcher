@@ -5,6 +5,9 @@ A command-line interface application for managing your personal goals and dreams
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
+- [CLI Script (cli.py)](#cli-script-(cli.py))
+- [Helper Functions (helpers.py)](#helper-functions-(helpers.py))
+- [Database Models (models.py)](#database-models-(models.py))
 - [Installation](#installation)
 - [Usage](#usage)
 - [Database Schema](#database-schema)
@@ -49,6 +52,37 @@ My Bucket List CLI is a Python-based application that allows users to create, ma
 - 📊 Monitor your progress with completion statistics
 - 💾 Export and import your bucket list data
 
+# CLI Script (cli.py)
+   The cli.py file is the heart of our application. It provides the main entry point and user interface for the My Bucket List CLI.
+   Main Functions:
+
+   clear_screen(): Clears the terminal screen for a clean interface.
+   print_header(): Displays a stylized header for the application.
+   print_menu(): Shows the main menu options to the user.
+   main(): The core function that runs the CLI loop, handling user input and calling appropriate helper functions.
+
+# Helper Functions (helpers.py)
+   The helpers.py file contains the core functionality of my application. Each function corresponds to a specific user action:
+
+   add_quest(): Prompts the user for quest details and adds it to the database.
+   edit_quest(): Allows the user to modify an existing quest's details.
+   complete_quest(): Marks a specified quest as completed.
+   delete_quest(): Removes a quest from the database.
+   list_quest(): Displays all quests, with options for filtering.
+   search_quests(): Allows the user to search for quests by keyword.
+   manage_categories(): Provides a sub-menu for category management.
+   check_deadlines(): Checks for and notifies about upcoming quest deadlines.
+
+
+# Database Models (models.py)
+   The models.py file defines the database schema using SQLAlchemy ORM. It has the following main models:
+
+   Quest: Represents individual bucket list items, with attributes like title, description, deadline, and completion status.
+   User: Manages user accounts (for potential multi-user functionality).
+   Category: Allows for the categorization of quests.
+   ItemCategory: Facilitates many-to-many relationships between quests and categories.
+
+   
 ## Installation
 
 1. Clone the repository:
