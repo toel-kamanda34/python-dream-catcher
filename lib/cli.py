@@ -90,7 +90,7 @@ def delete_quest():
     session.close()
 
 
-def list_quests():
+def list_quest():
     session = SessionLocal()
     quests = session.query(Quest).options(joinedload(Quest.categories)).all()
     for quest in quests:
