@@ -52,7 +52,7 @@ My Bucket List CLI is a Python-based application that allows users to create, ma
 - 📊 Monitor your progress with completion statistics
 - 💾 Export and import your bucket list data
 
-# CLI Script (cli.py)
+## CLI Script (cli.py)
    The cli.py file is the heart of our application. It provides the main entry point and user interface for the My Bucket List CLI.
    Main Functions:
 
@@ -61,7 +61,7 @@ My Bucket List CLI is a Python-based application that allows users to create, ma
    print_menu(): Shows the main menu options to the user.
    main(): The core function that runs the CLI loop, handling user input and calling appropriate helper functions.
 
-# Helper Functions (helpers.py)
+## Helper Functions (helpers.py)
    The helpers.py file contains the core functionality of my application. Each function corresponds to a specific user action:
 
    add_quest(): Prompts the user for quest details and adds it to the database.
@@ -74,7 +74,7 @@ My Bucket List CLI is a Python-based application that allows users to create, ma
    check_deadlines(): Checks for and notifies about upcoming quest deadlines.
 
 
-# Database Models (models.py)
+## Database Models (models.py)
    The models.py file defines the database schema using SQLAlchemy ORM. It has the following main models:
 
    Quest: Represents individual bucket list items, with attributes like title, description, deadline, and completion status.
