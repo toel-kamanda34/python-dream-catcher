@@ -16,7 +16,7 @@ class Quest(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     
 
-    user = relationship("User", back_populates="quests")
+    categories = relationship("Category", secondary='item_categories', backref="quests")
 
     
 class User(Base):
@@ -28,3 +28,15 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     quests = relationship('Quest', back_populates='user')
+
+
+class Category(Base):
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, Unique=True, nullable=False)
+
+class ItemCategory(Base):
+    __tablename__ = 'item_categories'
+
+    item_id = Column(Integer, ForeignKey('quests.id'), primary_key=True)
+    category_id = Column(Integer, ForeignKey('categories.id'),primary_key=True)
