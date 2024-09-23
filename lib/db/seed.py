@@ -1,23 +1,61 @@
+import random
+from datetime import datetime, timedelta
+from sqlalchemy.exc import IntegrityError
+from models import User, Quest, Category, item_category
 from database import SessionLocal
-from models import Destination, BucketListItem
 
-session = SessionLocal()
+def seed_users():
+    session = SessionLocal()
+    users = [
+        User(username=f"user{i}", email=f"user{i}@example.com")
+        for i in range(1, 11)
+    ]
+    session.add_all(users)
+    session.commit()
 
-#destinations
-destination1 = Destination(name="Mount Kenya", location="Central Kenya")
-destination2 = Destination(name="Maasai Mara", location="Narok")
-destination3 = Destination(name="Diani Beach", location="Mombasa")
-destination4 = Destination(name="Lake Naivasha", location="Naivasha")
+def seed_categories():
+    session = SessionLocal()
+    categories = [
+        Category(name=name)
+        for name in ["Travel", "Fitness", "Education", "Career", "Personal", "Adventure", "Financial", "Relationship", "Hobby", "Spiritual"]
+    ]
+    session.add_all(categories)
+    session.commit()
 
-#creating bucket list items
-bucket_item1 = BucketListItem(description="Hike Mount Kenya", destination=destination1)
-bucket_item2 = BucketListItem(description="Safari at Maasai Mara", destination=destination2)
-bucket_item3 = BucketListItem(description="Relax at Diani Beach", destination=destination3)
-bucket_item4 = BucketListItem(description="Boat ride at Lake Naivasha", destination=destination4)
+def seed_quests():
+    session = SessionLocal()
+    for i in range(1, 51):
+        quest = Quest(
+            title=f"Quest {i}",
+            description=f"Description for Quest {i}",
+            completed=random.choice([True, False]),
+            created_at=datetime.utcnow() - timedelta(days=random.randint(1, 365)),
+            deadline=datetime.utcnow() + timedelta(days=random.randint(1, 365)),
+            user_id=random.randint(1, 10)
+        )
+        session.add(quest)
+    session.commit()
 
-#commit to database 
-session.add_all([destination1,destination2, destination3, destination4 , bucket_item1, bucket_item2, bucket_item3, bucket_item4  ])
-session.commit()
+def seed_item_categories():
+    session = SessionLocal()
+    quests = session.query(Quest).all()
+    categories = session.query(Category).all()
+    
+    for quest in quests:
+        num_categories = random.randint(1, 3)
+        selected_categories = random.sample(categories, num_categories)
+        for category in selected_categories:
+            try:
+                quest.categories.append(category)
+                session.commit()
+            except IntegrityError:
+                session.rollback()  # If the relationship already exists, just roll back and continue
+    
+    session.commit()
 
-print("Dtabase seeded successfully")
-session.close()
+if __name__ == "__main__":
+    seed_users()
+    seed_categories()
+    seed_quests()
+    seed_item_categories()
+    print("Seeding completed successfully!")
