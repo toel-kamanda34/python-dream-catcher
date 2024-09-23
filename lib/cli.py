@@ -1,8 +1,16 @@
-from db.models import Quest, User, Category
-from db.database import SessionLocal
-from sqlalchemy.orm import joinedload
+from helpers import (
+    check_deadlines,
+    add_quest,
+    edit_quest,
+    complete_quest,
+    delete_quest,
+    list_quest,
+    search_quests,
+    manage_categories,
+)
 
 def main():
+    check_deadlines()
     while True:
         print("\nWelcome to the My Bucket List CLI!")
         print("1. Add Quest")
@@ -10,8 +18,9 @@ def main():
         print("3. Complete Quest")
         print("4. Delete Quest")
         print("5. View All Quests")
-        print("6. Manage Categories")
-        print("7. Exit")
+        print("6. Search Quests")
+        print("7. Manage Categories")
+        print("8. Exit")
 
         choice = input("Choose an option: ")
 
@@ -26,77 +35,15 @@ def main():
         elif choice == '5':
             list_quest()
         elif choice == '6':
-            manage_categories() 
+            search_quests()
         elif choice == '7':
+            manage_categories()
+        elif choice == '8':
             print("Goodbye!")
-            break                      
+            break
         else:
-            print("Invalid choice.Please try again.")
+            print("Invalid choice. Please try again.")
             
-
-def add_quest():
-    session = SessionLocal()
-    title = input("Enter quest title: ")
-    description = input("Enter quest description: ")
-    user_quest = Quest(title=title, description=description)
-
-    session.add(user_quest)
-    session.commit()
-    print("Quest added successfully!")
-    session.close()
-
-def edit_quest():
-    session = SessionLocal()
-    quest_id = input("Enter quest ID to edit: ")
-    quest = session.query(Quest).get(quest_id)
-    if quest:
-        new_title = input(f"Enter new title(current: {quest.title}): ")
-        new_description = input (f"Enter new description (current: {quest.description}): ")
-        if new_title:
-            quest.title = new_title
-        if new_description:
-            quest.description = new_description
-        session.commit()
-        print("Quest updated successfully!")
-    else:
-        print("Quest not found")
-    session.close()
-
-def complete_quest():
-    session = SessionLocal()
-    quest_id = input("Enter quest ID to complete: ")
-    try:
-        quest = session.query(Quest).get(int(quest_id))  # Convert input to int
-        if quest:
-            quest.completed = True
-            session.commit()
-            print("Quest marked as completed!")
-        else:
-            print("Quest not found!")
-        session.close()
-    except ValueError:
-        print("Invalid quest ID. Please enter a number.")
-
-def delete_quest():
-    session = SessionLocal()
-    quest_id = input("Enter quest ID to delete: ")
-    quest = session.quesry(Quest).get(quest_id)
-    if quest:
-        session.delete(quest)
-        session.commit()
-        print("Quest deleted successfully!")
-    else:
-        print("Quest not found!")
-    session.close()
-
-
-def list_quest():
-    session = SessionLocal()
-    quests = session.query(Quest).options(joinedload(Quest.categories)).all()
-    for quest in quests:
-        categories = ",".join([c.name for c in quest.categories])
-        print(f"{quest.id}: {quest.title} (Completed: {quest.completed}) - Categories: {categories}")
-    session.close()
 
 
 if __name__ == '__main__':

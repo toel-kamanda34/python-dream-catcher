@@ -8,7 +8,7 @@ def seed_users():
     session = SessionLocal()
     users = [
         User(username=f"user{i}", email=f"user{i}@example.com")
-        for i in range(1, 11)
+        for i in range(1, 17)
     ]
     session.add_all(users)
     session.commit()
@@ -24,7 +24,7 @@ def seed_categories():
 
 def seed_quests():
     session = SessionLocal()
-    for i in range(1, 51):
+    for i in range(1, 101):
         quest = Quest(
             title=f"Quest {i}",
             description=f"Description for Quest {i}",
@@ -42,7 +42,7 @@ def seed_item_categories():
     categories = session.query(Category).all()
     
     for quest in quests:
-        num_categories = random.randint(1, 3)
+        num_categories = random.randint(1, 7)
         selected_categories = random.sample(categories, num_categories)
         for category in selected_categories:
             try:
@@ -53,7 +53,22 @@ def seed_item_categories():
     
     session.commit()
 
+def clear_database():
+    session = SessionLocal()
+    
+    # Delete all relationships from the association table first if you have foreign key constraints
+    session.execute(item_category.delete())
+    
+    # Then, delete from all other tables
+    session.query(Quest).delete()
+    session.query(Category).delete()
+    session.query(User).delete()
+    
+    session.commit()
+    print("Database cleared.")
+
 if __name__ == "__main__":
+    clear_database()
     seed_users()
     seed_categories()
     seed_quests()
