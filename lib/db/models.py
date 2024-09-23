@@ -19,3 +19,12 @@ class Quest(Base):
     user = relationship("User", back_populates="quests")
 
     
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, nullable=False, unique=True )
+    email = Column(String, nullable=False, unique=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    quests = relationship('Quest', back_populates='user')
