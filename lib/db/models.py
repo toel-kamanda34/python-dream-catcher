@@ -15,7 +15,7 @@ class Quest(Base):
     deadline = Column(DateTime)
     user_id = Column(Integer, ForeignKey('users.id'))
     
-
+    #many to many r/ship with Category via item_category
     categories = relationship("Category", secondary='item_categories', backref="quests")
 
     
@@ -23,8 +23,8 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, nullable=False, unique=True )
-    email = Column(String, nullable=False, unique=True)
+    username = Column(String, nullable=False )
+    email = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     quests = relationship('Quest', back_populates='user')
@@ -33,7 +33,7 @@ class User(Base):
 class Category(Base):
     __tablename__ = 'categories'
     id = Column(Integer, primary_key=True)
-    name = Column(String, Unique=True, nullable=False)
+    name = Column(String, nullable=False)
 
 class ItemCategory(Base):
     __tablename__ = 'item_categories'
