@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Table
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from database import Base
+from db.database import Base
 
 item_category = Table('item_categories', Base.metadata,
     Column('item_id', Integer, ForeignKey('quests.id'), primary_key=True),
